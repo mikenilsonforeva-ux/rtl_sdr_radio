@@ -65,6 +65,7 @@ class RtlSdrReceiver(gr.top_block, Qt.QWidget):
             "RF Spectrum", 1
         )
         self.spectrum.set_update_time(0.10)
+        self.spectrum.set_frequency_range(self.center_freq, self.sample_rate)
         self.spectrum.set_y_axis(-110, 0)
         self.spectrum.set_line_label(0, "RTL-SDR")
         self.spectrum_win = sip_wrap(self.spectrum.qwidget())
@@ -75,6 +76,7 @@ class RtlSdrReceiver(gr.top_block, Qt.QWidget):
             "Waterfall", 1
         )
         self.waterfall.set_update_time(0.10)
+        self.waterfall.set_frequency_range(self.center_freq, self.sample_rate)
         self.waterfall.set_intensity_range(-110, 0)
         self.waterfall_win = sip_wrap(self.waterfall.qwidget())
         root.addWidget(self.waterfall_win, 2)
@@ -146,8 +148,8 @@ class RtlSdrReceiver(gr.top_block, Qt.QWidget):
     def set_frequency_mhz(self, mhz):
         self.center_freq = int(mhz * 1e6)
         self.src.set_center_freq(self.center_freq, 0)
-        self.spectrum.set_frequency_range(0, self.sample_rate)
-        self.waterfall.set_frequency_range(0, self.sample_rate)
+        self.spectrum.set_frequency_range(self.center_freq, self.sample_rate)
+        self.waterfall.set_frequency_range(self.center_freq, self.sample_rate)
         self.channel.set_center_freq(self.fine_tune, self.sample_rate)
         self.status.setText(f"Настройка: {mhz:.6f} MHz · {self.mode}")
 
